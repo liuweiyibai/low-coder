@@ -76,12 +76,14 @@ VALUES ('00000000-0000-0000-0000-000000000001', '默认租户', 'default-tenant'
 ON CONFLICT (slug) DO NOTHING;
 
 -- 插入默认管理员用户
-INSERT INTO users (id, tenant_id, email, username, name, role, status)
+-- 默认密码: admin (已加密)
+INSERT INTO users (id, tenant_id, email, username, password_hash, name, role, status)
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     '00000000-0000-0000-0000-000000000001',
     'admin@lowcoder.com',
     'admin',
+    '$2a$10$0N0avZgQmTAxDgaXp.rvYeUcAV.j94lsGxI99LM/1wOokMoJS/qdm',
     '管理员',
     'admin',
     'active'

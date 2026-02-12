@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { getDb } from './db';
 import { users } from '@low-coder/database/schemas';
-import { eq } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -18,17 +18,58 @@ export const authOptions: NextAuthOptions = {
                     return null;
                 }
 
-                // 检查是否为默认管理员账号
-                if (credentials.email === 'admin' && credentials.password === 'admin') {
-                    return {
-                        id: '00000000-0000-0000-0000-000000000002',
-                        email: 'admin@lowcoder.com',
-                        name: '管理员',
-                    };
-                }
+                try {
+                    const db = getDb();
 
-                // 其他账号验证已禁用
-                return null;
+                    // 从数据库查找用户（支持邮箱或用户名登录）
+                    const [user] = await db
+                        .select()
+                        .from(users)
+                        .where(
+                            or(
+                                eq(users.email, credentials.email),
+                                eq(users.username, credentials.email)
+                            )
+                        )
+                        .limit(1);
+
+                    if (!user) {
+                        console.log('用户不存在');
+                        return null;
+                    }
+
+                    // 检查用户状态
+                    if (user.status !== 'active') {
+                        console.log('用户账号未激活');
+                        return null;
+                    }
+
+                    // 验证密码
+                    if (!user.passwordHash) {
+                        console.log('用户未设置密码');
+                        return null;
+                    }
+
+                    const isPasswordValid = await compare(
+                        credentials.password,
+                        user.passwordHash
+                    );
+
+                    if (!isPasswordValid) {
+                        console.log('密码错误');
+                        return null;
+                    }
+
+                    // 认证成功，返回用户信息
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.displayName || user.username || '用户',
+                    };
+                } catch (error) {
+                    console.error('认证失败:', error);
+                    return null;
+                }
             },
         }),
     ],
