@@ -1,0 +1,52 @@
+{
+    "name": "@low-coder/runtime",
+    "version": "1.0.0",
+    "description": "Low-Code Platform Runtime Engine - 运行时渲染引擎",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
+        },
+        "./react": {
+            "types": "./dist/react/index.d.ts",
+            "require": "./dist/react/index.js",
+            "import": "./dist/react/index.mjs"
+        }
+    },
+    "scripts": {
+        "build": "tsup src/index.ts src/react/index.ts --format cjs,esm --dts",
+        "dev": "tsup src/index.ts src/react/index.ts --format cjs,esm --dts --watch",
+        "lint": "eslint src --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@low-coder/schema-core": "workspace:*",
+        "@low-coder/component-sdk": "workspace:*",
+        "nanoid": "^5.0.4",
+        "eventemitter3": "^5.0.1",
+        "react": "^18.3.1"
+    },
+    "peerDependencies": {
+        "react": "^18.3.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/react": "^18.3.1",
+        "tsup": "^8.0.1",
+        "typescript": "^5.3.3",
+        "vitest": "^1.2.0"
+    },
+    "keywords": [
+        "low-code",
+        "runtime",
+        "renderer"
+    ],
+    "author": "Low-Coder Team",
+    "license": "MIT"
+}

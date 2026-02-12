@@ -1,0 +1,44 @@
+{
+    "name": "@low-coder/schema-core",
+    "version": "1.0.0",
+    "description": "Low-Code Platform Schema Core - 核心Schema协议实现",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+        "lint": "eslint src --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "zod": "^3.22.4",
+        "nanoid": "^5.0.4",
+        "fast-deep-equal": "^3.1.3",
+        "json-schema": "^0.4.0"
+    },
+    "devDependencies": {
+        "@types/json-schema": "^7.0.15",
+        "@types/node": "^20.11.0",
+        "tsup": "^8.0.1",
+        "typescript": "^5.3.3",
+        "vitest": "^1.2.0"
+    },
+    "keywords": [
+        "low-code",
+        "schema",
+        "json-schema",
+        "validation"
+    ],
+    "author": "Low-Coder Team",
+    "license": "MIT"
+}

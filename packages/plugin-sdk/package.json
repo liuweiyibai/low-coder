@@ -1,0 +1,41 @@
+{
+    "name": "@low-coder/plugin-sdk",
+    "version": "1.0.0",
+    "description": "Low-Code Platform Plugin SDK - 插件开发工具包",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
+        }
+    },
+    "scripts": {
+        "build": "tsup src/index.ts --format cjs,esm --dts",
+        "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+        "lint": "eslint src --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@low-coder/schema-core": "workspace:*",
+        "nanoid": "^5.0.4",
+        "eventemitter3": "^5.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "tsup": "^8.0.1",
+        "typescript": "^5.3.3",
+        "vitest": "^1.2.0"
+    },
+    "keywords": [
+        "low-code",
+        "plugin",
+        "sdk"
+    ],
+    "author": "Low-Coder Team",
+    "license": "MIT"
+}
